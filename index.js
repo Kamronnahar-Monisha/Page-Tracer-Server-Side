@@ -22,9 +22,16 @@ const run = async ()=>{
         
         // get api for services
         app.get('/services',async(req,res)=>{
-            const query ={};
+            const size = parseInt(req.query.size);
+            const query = {};
             const cursor = serviceCollection.find(query);
-            const services = await cursor.limit(3).toArray();
+            let services;
+            if(size){
+                services = await cursor.limit(size).toArray();
+            }
+            else{
+                services = await cursor.toArray();
+            }
             res.send(services);
         })
 
