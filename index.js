@@ -82,12 +82,24 @@ const run = async () => {
         })
 
 
+        //patch api for updating single review
+        app.patch('/orders/:id', async (req, res) => {
+            const id = req.params.id;
+            const editedReviewText = req.body.editedReview;
+            const query = { _id: ObjectId(id) };
+            const updateDoc = {
+                $set: {
+                    reviewText: editedReviewText
+                },
+            };
+            const result = await reviewCollection.updateOne(query, updateDoc);
+            res.send(result);
+        })
 
-      
 
 
         //Delete a review by id
-        app.delete('/orders/:id',async(req,res)=>{
+        app.delete('/orders/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await reviewCollection.deleteOne(query);
