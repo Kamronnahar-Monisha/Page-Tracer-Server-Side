@@ -69,10 +69,11 @@ const run = async () => {
         })
 
 
-        // post api for inserting single user document
+        // post api for inserting single service document
         app.post('/services', async (req, res) => {
-            const user = req.body;
-            const result = await usersCollection.insertOne(user);
+            const service = req.body;
+            const result = await serviceCollection.insertOne(service);
+            res.send(result);
         })
         // post api for inserting single review
         app.post('/orders', async (req, res) => {
