@@ -42,6 +42,13 @@ const run = async () => {
             const service = await serviceCollection.findOne(query);
             res.send(service);
         })
+        //get api for specific review by id
+        app.get('/orders/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const review = await reviewCollection.findOne(query);
+            res.send(review);
+        })
         // get api for specific review by id
         app.get('/orders', async (req, res) => {
             const serviceId = req.query.serviceId;
@@ -52,7 +59,7 @@ const run = async () => {
             }
             if (userEmail) {
                 query = {
-                    email:userEmail
+                    email: userEmail
                 };
             }
             const cursor = reviewCollection.find(query);
@@ -70,6 +77,32 @@ const run = async () => {
         app.post('/orders', async (req, res) => {
             const review = req.body;
             const result = await reviewCollection.insertOne(review);
+            res.send(result);
+        })
+
+
+
+        //patch api for updating single review
+        app.patch('/orders/:id', async (req, res) => {
+            const id = req.params.id;
+            const editedReviewText = req.body.editedReview;
+            const query = { _id: ObjectId(id) };
+            const updateDoc = {
+                $set: {
+                    reviewText: editedReviewText
+                },
+            };
+            const result = await reviewCollection.updateOne(query, updateDoc);
+            res.send(result);
+        })
+
+
+
+        //Delete a review by id
+        app.delete('/orders/:id',async(req,res)=>{
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await reviewCollection.deleteOne(query);
             res.send(result);
         })
 
